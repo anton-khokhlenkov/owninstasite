@@ -1,78 +1,54 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Сайт под Instagram и TikTok</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    // Таймер до конца акции (установим 3 дня от текущей даты)
-    window.addEventListener('DOMContentLoaded', () => {
-      const countdown = document.getElementById("countdown");
-      const end = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
-
-      function updateTimer() {
-        const diff = end - new Date();
-        if (diff <= 0) {
-          countdown.textContent = "Акция завершена";
-          return;
-        }
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diff / (1000 * 60)) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-        countdown.textContent = `${d}д ${h}ч ${m}м ${s}с`;
-      }
-      setInterval(updateTimer, 1000);
-      updateTimer();
-    });
-  </script>
+  <title>Boost Your Business</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
-<body class="bg-white text-gray-800 font-sans p-4 max-w-md mx-auto">
-  <div class="text-center mt-6">
-    <img src="IMG_7453-round.png" alt="Антон" class="w-24 h-24 mx-auto rounded-full border-2 border-blue-500">
-    <h1 class="text-xl font-bold mt-4">Антон Хохленков</h1>
-    <p class="text-sm text-gray-500">Создание страниц для Instagram и TikTok</p>
+<body>
+  <div class="page-wrapper">
+    <header class="hero" data-aos="fade-up">
+      <div class="lang-switcher">
+        <button onclick="setLanguage('en')">🇬🇧 English</button>
+        <button onclick="setLanguage('ru')">🇷🇺 Русский</button>
+        <button onclick="setLanguage('ua')">🇺🇦 Українська</button>
+      </div>
+      <div class="language-indicator">
+        <span id="current-language">🇬🇧</span>
+      </div>
+
+      <h1>Boost Your Business with SEO & Marketing</h1>
+      <p>We create stunning websites and drive traffic with Google & Yandex Ads</p>
+      <a href="#services" class="cta-btn">Get Started</a>
+    </header>
+
+    <main>
+      <section id="services" data-aos="fade-up">
+        <h2>Our Services</h2>
+        <div class="service-list">
+          <div class="service">SEO Optimization</div>
+          <div class="service">Google & Yandex Ads</div>
+          <div class="service">Web Development</div>
+          <div class="service">Marketing Funnels</div>
+        </div>
+      </section>
+
+      <section id="pricing" data-aos="fade-up">
+        <h2>Pricing</h2>
+        <p>Starting from $199 — Pay securely via Stripe</p>
+        <a href="https://checkout.stripe.com/pay/cs_test_..." class="cta-btn">Pay Now</a>
+      </section>
+    </main>
+
+    <footer data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+      <p>© 2025 BoostYourBiz. All rights reserved.</p>
+    </footer>
   </div>
 
-  <div class="mt-6 space-y-3">
-    
-    <a href="https://instagram.com/yourprofile" class="block w-full text-center bg-pink-400 text-white py-2 rounded-xl">Instagram</a>
-    <a href="https://www.tiktok.com/@yourprofile" class="block w-full text-center bg-black text-white py-2 rounded-xl">TikTok</a>
-  </div>
-
-  <div class="mt-8">
-    <h2 class="text-lg font-semibold mb-2">Что вы получите:</h2>
-    <ul class="space-y-1 text-sm">
-      <li>✔️ Мини-сайт за 1 день</li>
-      <li>✔️ Индивидуальный стиль</li>
-      <li>✔️ Установка на профиль Instagram и TikTok</li>
-      <li>✔️ Подключение мессенджеров и формы</li>
-    </ul>
-  </div>
-
-  <div class="mt-8">
-    <h2 class="text-lg font-semibold mb-2">Отзывы:</h2>
-    <div class="space-y-3 text-sm">
-      <div class="bg-gray-100 p-3 rounded-xl">«Антон сделал сайт за вечер! Очень красиво и стильно. Спасибо!» — Мария, визажист</div>
-      <div class="bg-gray-100 p-3 rounded-xl">«Теперь мои клиенты легко записываются прямо из Instagram!» — Сергей, барбер</div>
-      <div class="bg-gray-100 p-3 rounded-xl">«Удобный сайт, всё работает. Рекомендую!» — Наталья, коуч</div>
-    </div>
-  </div>
-
-  <div class="mt-8">
-    <h2 class="text-lg font-semibold mb-2">Успей заказать со скидкой!</h2>
-    <p class="text-red-600 text-sm mb-2">До конца акции осталось:</p>
-    <div id="countdown" class="text-xl font-bold text-red-700"></div>
-  </div>
-
-  <div class="mt-8">
-    <h2 class="text-lg font-semibold mb-2">Заявка на создание сайта:</h2>
-    <iframe src="https://forms.gle/YpNfMxGMTUkfM7fPA" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
-  </div>
-
-  <div class="mt-8 text-center text-xs text-gray-400">
-    © 2025 Антон Хохленков | Сайт для Instagram и TikTok
-  </div>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
 </body>
 </html>
