@@ -5,7 +5,7 @@ const translations = {
     cta: "Get Started",
     servicesTitle: "Our Services",
     pricingText: "Starting from $199 — Pay securely via Stripe",
-    payNow: "Pay Now"
+    payNow: "Connect"
   },
   ru: {
     title: "Продвигайте бизнес с помощью SEO и маркетинга",
@@ -13,7 +13,7 @@ const translations = {
     cta: "Начать",
     servicesTitle: "Наши услуги",
     pricingText: "От $199 — безопасная оплата через Stripe",
-    payNow: "Оплатить"
+    payNow: "Отправить сообщение"
   },
   ua: {
     title: "Розвивайте бізнес за допомогою SEO та маркетингу",
@@ -21,7 +21,7 @@ const translations = {
     cta: "Почати",
     servicesTitle: "Наші послуги",
     pricingText: "Від $199 — безпечна оплата через Stripe",
-    payNow: "Сплатити"
+    payNow: "Зв'язатись"
   }
 };
 
@@ -53,3 +53,4 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedLang = localStorage.getItem('preferredLanguage') || 'en';
   setLanguage(savedLang);
 });
+
