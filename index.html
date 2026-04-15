@@ -104,82 +104,93 @@
 
   <!-- FORM LOGIC -->
   <script>
-    const SUPABASE_URL = "https://adflqkpftbqafrzqfbfz.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_2lU9QtcDV__ubC00_BLUPQ_Y2aTEB4Q";
+  const SUPABASE_URL = "https://adflqkpftbqafrzqfbfz.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_2lU9QtcDV__ubC00_BLUPQ_Y2aTEB4Q";
 
-    const TELEGRAM_TOKEN = "8341318643:AAGnq8lzr1_agGfWR3_rX-Fc2swRaDDxydY";
-    const TELEGRAM_CHAT_ID = "963403269";
+  const TELEGRAM_TOKEN = "8341318643:AAGnq8lzr1_agGfWR3_rX-Fc2swRaDDxydY";
+  const TELEGRAM_CHAT_ID = "963403269";
 
-    const WHATSAPP_PHONE = "+79215994989";
+  const WHATSAPP_PHONE = "79215994989"; // без плюса для wa.me
 
-    const form = document.getElementById("orderForm");
-    const status = document.getElementById("formStatus");
+  const form = document.getElementById("orderForm");
+  const status = document.getElementById("formStatus");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      if (form.honeypot.value !== "") return;
+    if (form.honeypot.value !== "") return;
 
-      await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 600));
 
-      const data = {
-        name: form.name.value.trim(),
-        phone: form.phone.value.trim(),
-        message: form.message.value.trim()
-      };
+    const data = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      message: form.message.value.trim()
+    };
 
-      status.textContent = "Sending...";
+    if (!data.name || !data.phone || !data.message) {
+      status.textContent = "Please fill all fields.";
+      return;
+    }
 
-      try {
-        // Supabase
-        await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Prefer": "return=minimal"
-          },
-          body: JSON.stringify(data)
-        });
+    status.textContent = "Sending...";
 
-        // Telegram
-        const text = `📩 New request:
+    try {
+      // 1) Supabase
+      await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(data)
+      });
+
+      // 2) Telegram
+      const text = `📩 New request:
 👤 Name: ${data.name}
 📱 Phone: ${data.phone}
 💬 Message: ${data.message}`;
 
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
-        });
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+      });
 
-        // WhatsApp
-        const waText = encodeURIComponent(
-          `New request:\nName: ${data.name}\nPhone: ${data.phone}\nMessage: ${data.message}`
-        );
+      // 3) WhatsApp — через wa.me (без fetch, просто открываем ссылку)
+      const waText = encodeURIComponent(
+        `New request:\nName: ${data.name}\nPhone: ${data.phone}\nMessage: ${data.message}`
+      );
+      const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${waText}`;
 
-        await fetch(`https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_PHONE}&text=${waText}`);
-
-        form.reset();
-        status.textContent = "";
-        openPopup();
-
-      } catch (err) {
-        console.error(err);
-        status.textContent = "Error. Try again later.";
+      // Попробуем открыть в новом окне, но если Instagram заблокирует — заявка всё равно уже сохранена
+      try {
+        window.open(waUrl, "_blank");
+      } catch (e) {
+        console.warn("WhatsApp open blocked:", e);
       }
-    });
 
-    function openPopup() {
-      document.getElementById("popupSuccess").classList.remove("hidden");
-    }
+      form.reset();
+      status.textContent = "";
+      openPopup();
 
-    function closePopup() {
-      document.getElementById("popupSuccess").classList.add("hidden");
+    } catch (err) {
+      console.error(err);
+      status.textContent = "Error. But if you see this, try again or write me in Telegram: @tonywebDC";
     }
-  </script>
+  });
+
+  function openPopup() {
+    document.getElementById("popupSuccess").classList.remove("hidden");
+  }
+
+  function closePopup() {
+    document.getElementById("popupSuccess").classList.add("hidden");
+  }
+</script>
 
 </body>
 </html>
