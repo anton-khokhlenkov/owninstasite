@@ -4,56 +4,182 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Boost Your Business</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-</head>
-<body>
-  <div class="page-wrapper">
-    <header class="hero" data-aos="fade-up">
-      <div class="lang-switcher">
-        <button onclick="setLanguage('en')">🇬🇧 English</button>
-        <button onclick="setLanguage('ru')">🇷🇺 Русский</button>
-        <button onclick="setLanguage('ua')">🇺🇦 Українська</button>
-      </div>
-      <div class="language-indicator">
-        <span id="current-language">🇬🇧</span>
-      </div>
 
-      <h1>Boost Your Business with SEO & Marketing</h1>
-      <p>We create stunning websites and drive traffic with Google & Yandex Ads</p>
-      <a href="#services" class="cta-btn">Get Started</a>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <style>
+    /* Popup animation */
+    .popup-show {
+      animation: popupScale 0.35s ease forwards;
+    }
+    @keyframes popupScale {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-gray-900">
+  <div class="page-wrapper max-w-3xl mx-auto px-4">
+
+    <!-- HEADER -->
+    <header class="hero text-center py-16" data-aos="fade-up">
+      <h1 class="text-4xl font-bold mb-4">Boost Your Business with SEO & Marketing</h1>
+      <p class="text-lg mb-6">We create stunning websites and drive traffic with Google & Yandex Ads</p>
+
+      <a href="#order" class="bg-blue-600 text-white px-6 py-3 rounded-xl inline-block hover:bg-blue-700 transition">
+        Get Started
+      </a>
     </header>
 
     <main>
-      <section id="services" data-aos="fade-up">
-        <h2>Our Services</h2>
-        <div class="service-list">
-          <div class="service">SEO Optimization</div>
-          <div class="service">Google & Yandex Ads</div>
-          <div class="service">Web Development</div>
-          <div class="service">Marketing Funnels</div>
+
+      <!-- SERVICES -->
+      <section id="services" class="py-12" data-aos="fade-up">
+        <h2 class="text-2xl font-bold mb-4 text-center">Our Services</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+          <div class="p-4 bg-gray-100 rounded-xl hover:shadow-lg transition">SEO Optimization</div>
+          <div class="p-4 bg-gray-100 rounded-xl hover:shadow-lg transition">Google & Yandex Ads</div>
+          <div class="p-4 bg-gray-100 rounded-xl hover:shadow-lg transition">Web Development</div>
+          <div class="p-4 bg-gray-100 rounded-xl hover:shadow-lg transition">Marketing Funnels</div>
         </div>
       </section>
 
-      <section id="pricing" data-aos="fade-up">
-        <h2 class="section-pricing">Do order</h2>
-        <!--<p>Starting from $3 — Pay securely via Stripe</p>-->
-        <a href="https://t.me/tonyaudit_bot" class="cta-btn section-link">Connect</a>
+      <!-- ORDER SECTION -->
+      <section id="order" class="py-12" data-aos="fade-up">
+        <h2 class="text-2xl font-bold mb-6 text-center">Do order</h2>
+
+        <!-- FORM -->
+        <form id="orderForm" class="space-y-3 bg-gray-100 p-6 rounded-xl shadow-lg max-w-md mx-auto transform transition duration-500 hover:shadow-2xl">
+
+          <!-- Honeypot -->
+          <input type="text" name="honeypot" class="hidden">
+
+          <input type="text" name="name" placeholder="Your name"
+                 class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" required>
+
+          <input type="text" name="phone" placeholder="Your phone"
+                 class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" required>
+
+          <textarea name="message" placeholder="Your request"
+                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500" required></textarea>
+
+          <button type="submit"
+                  class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 hover:scale-[1.02] transition">
+            Send request
+          </button>
+
+          <p id="formStatus" class="text-center text-sm mt-2"></p>
+        </form>
       </section>
     </main>
 
-    <footer data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+    <!-- FOOTER -->
+    <footer class="text-center py-8 text-gray-500" data-aos="fade-up">
       <p>© 2025 BoostYourBiz. All rights reserved.</p>
     </footer>
   </div>
 
-  <script src="script.js"></script>
+  <!-- POPUP -->
+  <div id="popupSuccess"
+       class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden">
+    <div class="bg-white text-gray-800 p-6 rounded-xl shadow-xl w-80 text-center popup-show">
+      <h3 class="text-xl font-bold mb-2">Спасибо! 🎉</h3>
+      <p>Ваша заявка отправлена. Я свяжусь с вами в ближайшее время.</p>
+      <button onclick="closePopup()"
+              class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition">
+        Закрыть
+      </button>
+    </div>
+  </div>
+
+  <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init();</script>
+
+  <!-- FORM LOGIC -->
+  <script>
+    const SUPABASE_URL = "https://adflqkpftbqafrzqfbfz.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2lU9QtcDV__ubC00_BLUPQ_Y2aTEB4Q";
+
+    const TELEGRAM_TOKEN = "8341318643:AAGnq8lzr1_agGfWR3_rX-Fc2swRaDDxydY";
+    const TELEGRAM_CHAT_ID = "963403269";
+
+    const WHATSAPP_PHONE = "+79215994989";
+
+    const form = document.getElementById("orderForm");
+    const status = document.getElementById("formStatus");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (form.honeypot.value !== "") return;
+
+      await new Promise(r => setTimeout(r, 600));
+
+      const data = {
+        name: form.name.value.trim(),
+        phone: form.phone.value.trim(),
+        message: form.message.value.trim()
+      };
+
+      status.textContent = "Sending...";
+
+      try {
+        // Supabase
+        await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(data)
+        });
+
+        // Telegram
+        const text = `📩 New request:
+👤 Name: ${data.name}
+📱 Phone: ${data.phone}
+💬 Message: ${data.message}`;
+
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+        });
+
+        // WhatsApp
+        const waText = encodeURIComponent(
+          `New request:\nName: ${data.name}\nPhone: ${data.phone}\nMessage: ${data.message}`
+        );
+
+        await fetch(`https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_PHONE}&text=${waText}`);
+
+        form.reset();
+        status.textContent = "";
+        openPopup();
+
+      } catch (err) {
+        console.error(err);
+        status.textContent = "Error. Try again later.";
+      }
+    });
+
+    function openPopup() {
+      document.getElementById("popupSuccess").classList.remove("hidden");
+    }
+
+    function closePopup() {
+      document.getElementById("popupSuccess").classList.add("hidden");
+    }
+  </script>
+
 </body>
 </html>
-
-
-
-
-
